@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<definitions
+	name="StockQuote"
+	targetNamespace="http://example.com/stockquote.wsdl"
+	xmlns:tns="http://example.com/stockquote.wsdl"
+	xmlns:xsd1="http://example.com/stockquote.xsd"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+	<types>
+		<schema
+			targetNamespace="http://example.com/stockquote.xsd"
+			xmlns="http://www.w3.org/2000/10/XMLSchema">
+			<element name="TradePriceRequest">
+				<complexType>
+					<all>
+						<element name="tickerSymbol" type="string"></element>
+					</all>
+				</complexType>
+			</element>
+			<element name="TradePrice">
+				<complexType>
+					<all>
+						<element name="price" type="float"></element>
+					</all>
+				</complexType>
+			</element>
+			
+		</schema>
+	</types>
+
+	<message name="GetLastTradePriceInput">
+		<part name="body" element="xsd1:TradePriceRequest"></part>
+	</message>
+	<message name="GetLastTradePriceOutput">
+		<part name="body" element="xsd1:TradePrice"></part>
+	</message>
+
+	<portType name="StockQuotePortType">
+		<operation name="GetLastTradePrice">
+			<input message="tns:GetLastTradePriceInput"/>
+			<output message="tns:GetLastTradePriceOutput"></output>
+		</operation>
+	</portType>
+	
+	<binding>
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="GetLastTradePrice">
+			<soap:operation soapAction="http://example.com/GetLastTradePrice"/>
+			<input/>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+
+	<service name="MyService">
+		<documentation>my service</documentation>
+		<port name="MyPort" binding="tns:StockQuoteBinding">
+			<soap:address location="http://localhost:8001/wsdl"/>
+		</port>
+	</service>
+
+</definitions>
